@@ -131,8 +131,7 @@ const test = parseTemplateData([
       address: [() => generateString(3), 3],
     },
   },
-  10,
-  89,
+  4,
 ]);
 console.log(test);
 console.log(test[0].info.address);
