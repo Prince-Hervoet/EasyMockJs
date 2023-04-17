@@ -5,9 +5,7 @@ export const proxyFunctions = {
   getAllResponseHeaders,
 };
 
-function open(method, url, async, user, password) {
-  console.log("fuckfuck open");
-}
+function open(method, url, async, user, password) {}
 
 function send(body) {
   console.log(this);
