@@ -1,5 +1,4 @@
 import { proxyFunctions } from "./functions.js";
-import axios from "axios";
 
 const real = XMLHttpRequest;
 const functionsKeys = Object.keys(proxyFunctions);
@@ -31,9 +30,5 @@ function proxyFunction(realFunction) {
   if (index === -1) {
     return realFunction;
   }
-  return proxyFunctions[functionsKeys[index]] || (() => {});
+  return proxyFunctions[functionsKeys[index]] || realFunction;
 }
-
-const test = XMLHttpRequest();
-console.log(test.send());
-axios("/user/12345");
