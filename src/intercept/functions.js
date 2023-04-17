@@ -1,3 +1,5 @@
+import { easyMock } from "../parse";
+
 export const proxyFunctions = {
   send,
   open,
@@ -5,14 +7,17 @@ export const proxyFunctions = {
   getAllResponseHeaders,
 };
 
-function open(method, url, async, user, password) {}
+let template;
+
+function open(method, url, async, user, password) {
+  template = easyMock.getTemplate({ method, url });
+}
 
 function send(body) {
-  console.log(this);
   if (this.onload) {
     this.onload();
   }
-  this.responseText = "asdfasdfasdf";
+  this.responseText = easyMock.parseTemplateData(template);
   if (this.onloadend) {
     this.onloadend();
   }

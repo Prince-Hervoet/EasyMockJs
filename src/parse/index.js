@@ -9,6 +9,7 @@ function addUrlInfo(urlInfo) {
   }
   const method = urlInfo.method;
   const strs = urlInfo.url.split("/");
+  const template = urlInfo.tempalte ?? globalTemplate;
   if (!container[method]) {
     container[method] = { next: {} };
   }
@@ -27,9 +28,7 @@ function addUrlInfo(urlInfo) {
       };
       if (i === strs.length - 1) {
         temp.has = true;
-        if (urlInfo.template) {
-          temp.template = urlInfo.template;
-        }
+        temp.template = template;
       }
       run.next[str] = temp;
       run = run.next[str];
@@ -38,9 +37,9 @@ function addUrlInfo(urlInfo) {
   }
 }
 
-function isInContainer(urlInfo) {
+function getTemplate(urlInfo) {
   if (!urlInfo || !urlInfo.method || !urlInfo.url) {
-    return null;
+    return {};
   }
   const method = urlInfo.method;
   const strs = urlInfo.url.split("/");
@@ -48,6 +47,7 @@ function isInContainer(urlInfo) {
     return null;
   }
   let i = 0;
+  let run = container[method];
   for (const str of strs) {
     if (!str) {
       ++i;
@@ -61,19 +61,38 @@ function isInContainer(urlInfo) {
       return null;
     }
     if (i === strs.length - 1 && run.has) {
-      return run.template;
+      return run.template ?? globalTemplate;
     }
     ++i;
   }
-  return null;
+  return {};
 }
 
 addUrlInfo({
   method: "GET",
   url: "https://developer.mozilla.org/open",
+  tempalte: [
+    {
+      username: () => randomeGenerate.generateString(2, ["Mike ", "Tell"]),
+      id: () => randomeGenerate.uuid(),
+      info: {
+        id: () => randomeGenerate.generateInteger(),
+        address: [() => randomeGenerate.generateString(3), 3],
+        uuk: "asdfasdf",
+      },
+    },
+    4,
+  ],
 });
 
-export function setUrlInfo(urlInfo, template) {
+const test = getTemplate({
+  method: "GET",
+  url: "https://developer.mozilla.org/open",
+});
+
+console.log(test);
+
+function setUrlInfo(urlInfo, template) {
   if (!template) {
     return;
   }
@@ -81,7 +100,7 @@ export function setUrlInfo(urlInfo, template) {
   addUrlInfo(urlInfo);
 }
 
-export function setGlobal(template) {
+function setGlobal(template) {
   if (!template) {
     return;
   }
@@ -110,7 +129,6 @@ function parseTemplateData(template) {
     const obj = {};
     for (const key in template) {
       const value = template[key];
-      console.log(value);
       if (typeof value === "function") {
         obj[key] = value();
       } else {
@@ -122,16 +140,24 @@ function parseTemplateData(template) {
   return template;
 }
 
-const test = parseTemplateData([
-  {
-    username: () => randomeGenerate.generateString(2, ["Mike ", "Tell"]),
-    id: () => randomeGenerate.uuid(),
-    info: {
-      id: () => randomeGenerate.generateInteger(),
-      address: [() => randomeGenerate.generateString(3), 3],
-    },
-  },
-  4,
-]);
-console.log(test);
-console.log(test[0].info.address);
+export const easyMock = {
+  setGlobal,
+  setUrlInfo,
+  getTemplate,
+  parseTemplateData,
+};
+
+// const test = parseTemplateData([
+//   {
+//     username: () => randomeGenerate.generateString(2, ["Mike ", "Tell"]),
+//     id: () => randomeGenerate.uuid(),
+//     info: {
+//       id: () => randomeGenerate.generateInteger(),
+//       address: [() => randomeGenerate.generateString(3), 3],
+//       uuk: "asdfasdf",
+//     },
+//   },
+//   4,
+// ]);
+// console.log(test);
+// console.log(test[0].info.address);
