@@ -1,4 +1,4 @@
-import { generateInteger, generateString, nanoId, uuid } from "./generate.js";
+import { randomeGenerate } from "./generate.js";
 
 const container = {};
 const globalTemplate = {};
@@ -124,11 +124,11 @@ function parseTemplateData(template) {
 
 const test = parseTemplateData([
   {
-    username: () => generateString(2, ["Mike ", "Tell"]),
-    id: () => uuid(),
+    username: () => randomeGenerate.generateString(2, ["Mike ", "Tell"]),
+    id: () => randomeGenerate.uuid(),
     info: {
-      id: () => generateInteger(),
-      address: [() => generateString(3), 3],
+      id: () => randomeGenerate.generateInteger(),
+      address: [() => randomeGenerate.generateString(3), 3],
     },
   },
   4,
