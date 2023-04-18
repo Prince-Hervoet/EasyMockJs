@@ -3,7 +3,7 @@ import { proxyFunctions } from "./functions.js";
 const real = XMLHttpRequest;
 const functionsKeys = Object.keys(proxyFunctions);
 
-export function intercept() {
+function intercept() {
   XMLHttpRequest = function () {
     const realObj = new real();
     const ans = {};
@@ -18,7 +18,7 @@ export function intercept() {
   };
 }
 
-export function giveBack() {
+function giveBack() {
   XMLHttpRequest = real;
 }
 
@@ -32,3 +32,8 @@ function proxyFunction(realFunction) {
   }
   return proxyFunctions[functionsKeys[index]] || realFunction;
 }
+
+export const easyMock = {
+  intercept,
+  giveBack,
+};

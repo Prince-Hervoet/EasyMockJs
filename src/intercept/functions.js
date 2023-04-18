@@ -1,11 +1,4 @@
-import { easyMock } from "../parse";
-
-export const proxyFunctions = {
-  send,
-  open,
-  setRequestHeader,
-  getAllResponseHeaders,
-};
+import { easyMock, easyMockContainer } from "../parse";
 
 let template;
 
@@ -17,7 +10,7 @@ function send(body) {
   if (this.onload) {
     this.onload();
   }
-  this.responseText = easyMock.parseTemplateData(template);
+  this.responseText = virtualResponse();
   if (this.onloadend) {
     this.onloadend();
   }
@@ -26,4 +19,17 @@ function send(body) {
 function setRequestHeader(key, val) {}
 function getAllResponseHeaders() {}
 
-function virtualResponse() {}
+function virtualResponse() {
+  if (template) {
+    return easyMockContainer.parseTemplateData(template);
+  } else {
+    return {};
+  }
+}
+
+export const proxyFunctions = {
+  send,
+  open,
+  setRequestHeader,
+  getAllResponseHeaders,
+};
