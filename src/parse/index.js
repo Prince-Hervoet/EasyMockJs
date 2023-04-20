@@ -1,5 +1,3 @@
-import { randomeGenerate } from "./generate.js";
-
 const container = {};
 const globalTemplate = {};
 
@@ -9,7 +7,7 @@ function addUrlInfo(urlInfo) {
   }
   const method = urlInfo.method;
   const strs = urlInfo.url.split("/");
-  const template = urlInfo.tempalte ?? globalTemplate;
+  const template = urlInfo.template ?? globalTemplate;
   if (!container[method]) {
     container[method] = { next: {} };
   }
@@ -41,6 +39,7 @@ function getTemplate(urlInfo) {
   if (!urlInfo || !urlInfo.method || !urlInfo.url) {
     return {};
   }
+
   const method = urlInfo.method;
   const strs = urlInfo.url.split("/");
   if (!container[method]) {
@@ -68,30 +67,6 @@ function getTemplate(urlInfo) {
   return {};
 }
 
-addUrlInfo({
-  method: "GET",
-  url: "https://developer.mozilla.org/open",
-  tempalte: [
-    {
-      username: () => randomeGenerate.generateString(2, ["Mike ", "Tell"]),
-      id: () => randomeGenerate.uuid(),
-      info: {
-        id: () => randomeGenerate.generateInteger(),
-        address: [() => randomeGenerate.generateString(3), 3],
-        uuk: "asdfasdf",
-      },
-    },
-    4,
-  ],
-});
-
-const test = getTemplate({
-  method: "GET",
-  url: "https://developer.mozilla.org/open",
-});
-
-// console.log(test);
-
 function setUrlInfo(urlInfo, template) {
   if (!template) {
     return;
@@ -99,32 +74,6 @@ function setUrlInfo(urlInfo, template) {
   urlInfo.template = template;
   addUrlInfo(urlInfo);
 }
-
-setUrlInfo(
-  {
-    method: "GET",
-    url: "https://developer.mozilla.org/open",
-  },
-  [
-    {
-      username: () => randomeGenerate.generateString(2, ["Mike ", "Tell"]),
-      id: () => randomeGenerate.uuid(),
-      info: {
-        id: () => randomeGenerate.generateInteger(),
-        address: [() => randomeGenerate.generateString(3), 3],
-        uuk: "asdfasdf",
-      },
-    },
-    4,
-  ]
-);
-
-const ttt = getTemplate({
-  method: "GET",
-  url: "https://developer.mozilla.org/open",
-});
-
-console.log(ttt);
 
 function setGlobal(template) {
   if (!template) {
@@ -172,6 +121,3 @@ export const easyMockContainer = {
   getTemplate,
   parseTemplateData,
 };
-
-// console.log(test);
-// console.log(test[0].info.address);

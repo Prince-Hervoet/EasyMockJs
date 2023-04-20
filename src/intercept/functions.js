@@ -1,9 +1,9 @@
-import { easyMock, easyMockContainer } from "../parse";
+import { easyMockContainer } from "../parse";
 
 let template;
 
 function open(method, url, async, user, password) {
-  template = easyMock.getTemplate({ method, url });
+  template = easyMockContainer.getTemplate({ method, url });
 }
 
 function send(body) {
