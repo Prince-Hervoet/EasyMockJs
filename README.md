@@ -3,6 +3,27 @@
 This is a easy mock project,it can mock some test data without changing your service codes.
 
 Now,you can use [object,number] to create some random data for your api.
+```
+    EasyMock.intercept();
+    EasyMockContainer.setUrlInfo(
+      {
+        method: "GET",
+        url: "http://localhost:9090/user/serfd",
+      },
+      [
+        {
+          username: () => randomeGenerate.generateString(2, ["Mike ", "Tell"]),
+          id: () => randomeGenerate.uuid(),
+          info: {
+            id: () => randomeGenerate.generateInteger(),
+            address: [() => randomeGenerate.generateString(3), 3],
+            uuk: "asdfasdf",
+          },
+        },
+        4,
+      ]
+    );
+```
 
 ```
     // template like this
