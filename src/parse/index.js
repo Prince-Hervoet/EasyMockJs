@@ -90,7 +90,7 @@ const test = getTemplate({
   url: "https://developer.mozilla.org/open",
 });
 
-console.log(test);
+// console.log(test);
 
 function setUrlInfo(urlInfo, template) {
   if (!template) {
@@ -99,6 +99,32 @@ function setUrlInfo(urlInfo, template) {
   urlInfo.template = template;
   addUrlInfo(urlInfo);
 }
+
+setUrlInfo(
+  {
+    method: "GET",
+    url: "https://developer.mozilla.org/open",
+  },
+  [
+    {
+      username: () => randomeGenerate.generateString(2, ["Mike ", "Tell"]),
+      id: () => randomeGenerate.uuid(),
+      info: {
+        id: () => randomeGenerate.generateInteger(),
+        address: [() => randomeGenerate.generateString(3), 3],
+        uuk: "asdfasdf",
+      },
+    },
+    4,
+  ]
+);
+
+const ttt = getTemplate({
+  method: "GET",
+  url: "https://developer.mozilla.org/open",
+});
+
+console.log(ttt);
 
 function setGlobal(template) {
   if (!template) {
@@ -140,24 +166,12 @@ function parseTemplateData(template) {
   return template;
 }
 
-export const easyMock = {
+export const easyMockContainer = {
   setGlobal,
   setUrlInfo,
   getTemplate,
   parseTemplateData,
 };
 
-// const test = parseTemplateData([
-//   {
-//     username: () => randomeGenerate.generateString(2, ["Mike ", "Tell"]),
-//     id: () => randomeGenerate.uuid(),
-//     info: {
-//       id: () => randomeGenerate.generateInteger(),
-//       address: [() => randomeGenerate.generateString(3), 3],
-//       uuk: "asdfasdf",
-//     },
-//   },
-//   4,
-// ]);
 // console.log(test);
 // console.log(test[0].info.address);

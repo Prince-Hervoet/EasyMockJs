@@ -33,7 +33,7 @@ function proxyFunction(realFunction) {
   return proxyFunctions[functionsKeys[index]] || realFunction;
 }
 
-export const easyMock = {
+export const EasyMock = {
   intercept,
   giveBack,
 };
